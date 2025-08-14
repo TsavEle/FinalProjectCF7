@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="WEB-INF/jsp/header2.jsp" />
+<%@ include file="/WEB-INF/jsp/header2.jsp" %>
 
 <h2 style="text-align:center; margin-top:20px;">Admin - Our Team</h2>
 
@@ -92,4 +92,4 @@
     }
 </script>
 
-<jsp:include page="WEB-INF/jsp/footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/footer.jsp" />

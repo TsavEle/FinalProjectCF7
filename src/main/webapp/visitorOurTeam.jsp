@@ -22,7 +22,7 @@
     <!-- Navigation buttons -->
     <div style="margin-bottom:40px;">
         <a href="index.jsp"><button style="padding:10px 20px; margin-right:20px;">HOME</button></a>
-        <a href="visitorOurFirm.jsp"><button style="padding:10px 20px;">OUR FIRM</button></a>
+        <a href="visitorOurFirm"><button style="padding:10px 20px;">OUR FIRM</button></a>
     </div>
 
     <!-- Search bar -->

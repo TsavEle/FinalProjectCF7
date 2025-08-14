@@ -6,11 +6,11 @@
     <p>Search and view information about lawyers in Greece.</p>
 
     <div style="margin-top:50px;">
-        <form action="our-firm.jsp" method="get" style="display:inline;">
+        <form action="visitorOurFirm" method="get" style="display:inline;">
             <button type="submit" style="padding:15px 30px; font-size:18px; margin-right:20px;">OUR FIRM</button>
         </form>
 
-        <form action="our-team.jsp" method="get" style="display:inline;">
+        <form action="visitorOurTeam" method="get" style="display:inline;">
             <button type="submit" style="padding:15px 30px; font-size:18px;">OUR TEAM</button>
         </form>
     </div>

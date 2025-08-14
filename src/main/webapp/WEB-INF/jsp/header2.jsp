@@ -14,5 +14,10 @@
 <body>
     <header>
         <h1>Papadopoulos Lawyers Directory</h1>
-        <a href="logout.jsp">Logout</a>
+         <form action="logout" method="get" style="display:inline;">
+
+                    <button type="submit" style="padding:10px 20px; font-size:16px; margin-left:20px;">
+                        Logout
+                    </button>
+                </form>
     </header>
