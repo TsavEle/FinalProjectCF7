@@ -1,0 +1,184 @@
+package finalProject.dao;
+
+import finalProject.Util.DBUtil;
+import finalProject.dao.daoUtil.SQLQueries;
+import finalProject.exceptions.LawyerDAOException;
+import finalProject.model.City;
+import finalProject.model.Lawyer;
+import finalProject.model.Skill;
+
+import javax.xml.transform.Result;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+public class LawyerDAOImpl implements ILawyerDAO {
+
+    @Override
+    public Lawyer insert(Lawyer lawyer, List<Integer> selectedSkillIds) throws LawyerDAOException {
+        Lawyer insertedLawyer = null;
+
+        try (Connection connection = DBUtil.getConnection()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement ps = connection.prepareStatement(SQLQueries.INSERT_LAWYER, Statement.RETURN_GENERATED_KEYS)){
+                ps.setString(1, lawyer.getFirstname());
+                ps.setString(2, lawyer.getLastname());
+                ps.setString(3, lawyer.getPhoneNumber());
+                ps.setString(4, lawyer.getZipcode());
+                ps.setString(5, lawyer.getStreetName());
+                ps.setString(6, lawyer.getStreetNumber());
+                ps.setString(7, lawyer.getEmail());
+                ps.setString(8, lawyer.getVat());
+                ps.setInt(9, lawyer.getCityId());
+                ps.setString(10, lawyer.getUuid() != null ? lawyer.getUuid() : UUID.randomUUID().toString());
+                ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
+                ps.setTimestamp(12, Timestamp.valueOf(LocalDateTime.now()));
+                ps.executeUpdate();
+
+                ResultSet rsGeneratedKeys = ps.getGeneratedKeys();
+                if (rsGeneratedKeys.next()) {
+                    int generatedId = rsGeneratedKeys.getInt(1);
+                    insertedLawyer = getById(generatedId);
+                } else {
+                    throw new LawyerDAOException("Failed to get generated lawyer Id.");
+                }
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(SQLQueries.ADD_SKILLS_TO_LAWYERS)){
+                for (Integer skillId : selectedSkillIds) {
+                    ps.setInt(1, insertedLawyer.getId());
+                    ps.setInt(2, skillId);
+                    ps.executeUpdate();
+                }
+            }
+            return insertedLawyer;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("SQL error in insert.");
+        }
+    }
+
+    @Override
+    public Lawyer update(Lawyer lawyer, List<Integer> selectedSkillsIds) throws LawyerDAOException {
+        Lawyer updatedLawyer = null;
+
+        try (Connection connection = DBUtil.getConnection()){
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement ps = connection.prepareStatement(SQLQueries.UPDATE_LAWYER)){
+                ps.setString(1, lawyer.getFirstname());
+                ps.setString(2, lawyer.getLastname());
+                ps.setString(3, lawyer.getPhoneNumber());
+                ps.setString(4, lawyer.getZipcode());
+                ps.setString(5, lawyer.getStreetName());
+                ps.setString(6, lawyer.getStreetNumber());
+                ps.setString(7, lawyer.getEmail());
+                ps.setString(8, lawyer.getVat());
+                ps.setInt(9, lawyer.getCityId());
+                ps.setString(10, lawyer.getUuid() != null ? lawyer.getUuid() : UUID.randomUUID().toString());
+                ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
+                ps.setTimestamp(12, Timestamp.valueOf(LocalDateTime.now()));
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(SQLQueries.DELETE_SKILLS_FROM_LAWYER)){
+                ps.setInt(1, lawyer.getId());
+                ps.executeUpdate();
+
+            }
+
+            try (PreparedStatement ps = connection.prepareStatement(SQLQueries.ADD_SKILLS_TO_LAWYERS)){
+                for (Integer skillId : selectedSkillsIds) {
+                    ps.setInt(1, lawyer.getId());
+                    ps.setInt(2, skillId);
+                    ps.executeUpdate();
+                }
+            }
+            connection.commit();
+            updatedLawyer = getById(lawyer.getId());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("SQL error in update");
+        }
+        return updatedLawyer;
+    }
+
+    @Override
+    public void delete(Integer id) throws LawyerDAOException {
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQLQueries.DELETE_LAWYER)) {
+
+            ps.setInt(1, id);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("SQL error in deleting lawyer with id: " + id);
+        }
+    }
+
+    @Override
+    public Lawyer getById(Integer id) throws LawyerDAOException {
+        Lawyer lawyer = null;
+
+        try(Connection connection = DBUtil.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQLQueries.GET_LAWYER_BY_ID)) {
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    lawyer = new Lawyer(
+                            rs.getInt("id"),
+                            rs.getString("firstname"),
+                            rs.getString("lastname"),
+                            rs.getString("phoneNumber"),
+                            rs.getString("zipcode"),
+                            rs.getString("streetName"),
+                            rs.getString("streetNumber"),
+                            rs.getString("email"),
+                            rs.getString("vat"),
+                            rs.getInt("cityId"),
+                            rs.getString("uuid"),
+                            rs.getTimestamp("createdAt").toLocalDateTime(),
+                            rs.getTimestamp("updatedAt").toLocalDateTime(),
+                            null
+                    );
+                }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("SQL error in getById for lawyer with id: " + id);
+        }
+        return lawyer;
+    }
+
+    @Override
+    public List<Lawyer> getAll() throws LawyerDAOException {
+        return List.of();
+    }
+
+    @Override
+    public Lawyer getByUUID(String uuid) throws LawyerDAOException {
+        return null;
+    }
+
+    @Override
+    public List<Lawyer> getSkill(Skill skillName) throws LawyerDAOException {
+        return List.of();
+    }
+
+    @Override
+    public Lawyer getByLastname(String lastname) throws LawyerDAOException {
+        return null;
+    }
+
+    @Override
+    public List<Lawyer> getByCity(City cityName) throws LawyerDAOException {
+        return List.of();
+    }
+}
