@@ -3,15 +3,12 @@ package finalProject.dao;
 import finalProject.Util.DBUtil;
 import finalProject.dao.daoUtil.SQLQueries;
 import finalProject.exceptions.LawyerDAOException;
-import finalProject.model.City;
 import finalProject.model.Lawyer;
 import finalProject.model.Skill;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class LawyerDAOImpl implements ILawyerDAO {
 
@@ -69,7 +66,7 @@ public class LawyerDAOImpl implements ILawyerDAO {
         try (Connection connection = DBUtil.getConnection()){
             connection.setAutoCommit(false);
 
-            try (PreparedStatement ps = connection.prepareStatement(SQLQueries.UPDATE_LAWYER)){
+            try (PreparedStatement ps = connection.prepareStatement(SQLQueries.UPDATE_LAWYER)) {
                 ps.setString(1, lawyer.getFirstname());
                 ps.setString(2, lawyer.getLastname());
                 ps.setString(3, lawyer.getPhoneNumber());
@@ -79,11 +76,10 @@ public class LawyerDAOImpl implements ILawyerDAO {
                 ps.setString(7, lawyer.getEmail());
                 ps.setString(8, lawyer.getVat());
                 ps.setInt(9, lawyer.getCityId());
-                ps.setString(10, lawyer.getUuid() != null ? lawyer.getUuid() : UUID.randomUUID().toString());
-                ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
-                ps.setTimestamp(12, Timestamp.valueOf(LocalDateTime.now()));
-                ps.executeUpdate();
+                ps.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now())); // updated_at
+                ps.setInt(11, lawyer.getId()); // WHERE id=?
 
+                ps.executeUpdate();
             }
 
             try (PreparedStatement ps = connection.prepareStatement(SQLQueries.DELETE_SKILLS_FROM_LAWYER)){
@@ -147,7 +143,7 @@ public class LawyerDAOImpl implements ILawyerDAO {
                             rs.getString("uuid"),
                             rs.getTimestamp("createdAt").toLocalDateTime(),
                             rs.getTimestamp("updatedAt").toLocalDateTime(),
-                            null
+                            getSkillsByLawyerId(rs.getInt("id"))
                     );
                 }
         } catch (SQLException e) {
@@ -159,26 +155,126 @@ public class LawyerDAOImpl implements ILawyerDAO {
 
     @Override
     public List<Lawyer> getAll() throws LawyerDAOException {
-        return List.of();
+        Lawyer lawyer;
+        List<Lawyer> lawyers = new ArrayList<>();
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQLQueries.GET_ALL_LAWYERS)){
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                lawyer = new Lawyer(rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("phoneNumber"),
+                        rs.getString("zipcode"),
+                        rs.getString("streetName"),
+                        rs.getString("streetNumber"),
+                        rs.getString("email"),
+                        rs.getString("vat"),
+                        rs.getInt("cityId"),
+                        rs.getString("uuid"),
+                        rs.getTimestamp("createdAt").toLocalDateTime(),
+                        rs.getTimestamp("updatedAt").toLocalDateTime(),
+                        getSkillsByLawyerId(rs.getInt("id")));
+                lawyers.add(lawyer);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("SQL error in getAll");
+        }
+        return lawyers;
     }
 
     @Override
     public Lawyer getByUUID(String uuid) throws LawyerDAOException {
-        return null;
+        Lawyer lawyer = null;
+
+        try(Connection connection = DBUtil.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQLQueries.GET_LAWYER_BY_UUID)) {
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                lawyer = new Lawyer(rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("phoneNumber"),
+                        rs.getString("zipcode"),
+                        rs.getString("streetName"),
+                        rs.getString("streetNumber"),
+                        rs.getString("email"),
+                        rs.getString("vat"),
+                        rs.getInt("cityId"),
+                        rs.getString("uuid"),
+                        rs.getTimestamp("createdAt").toLocalDateTime(),
+                        rs.getTimestamp("updatedAt").toLocalDateTime(),
+                        getSkillsByLawyerId(rs.getInt("id")));
+            }
+            return lawyer;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("SQL error in getUUID");
+        }
     }
 
-    @Override
-    public List<Lawyer> getSkill(Skill skillName) throws LawyerDAOException {
-        return List.of();
-    }
 
     @Override
     public Lawyer getByLastname(String lastname) throws LawyerDAOException {
-        return null;
+        Lawyer lawyer = null;
+
+        try(Connection connection = DBUtil.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQLQueries.GET_LAWYER_BY_LASTNAME)) {
+
+
+            ps.setString(1, lastname);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                lawyer = (new Lawyer(rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("phoneNumber"),
+                        rs.getString("zipcode"),
+                        rs.getString("streetName"),
+                        rs.getString("streetNumber"),
+                        rs.getString("email"),
+                        rs.getString("vat"),
+                        rs.getInt("cityId"),
+                        rs.getString("uuid"),
+                        rs.getTimestamp("createdAt").toLocalDateTime(),
+                        rs.getTimestamp("updatedAt").toLocalDateTime(),
+                        getSkillsByLawyerId(rs.getInt("id"))));
+            }
+            return lawyer;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("SQL error getLastname");
+        }
     }
 
-    @Override
-    public List<Lawyer> getByCity(City cityName) throws LawyerDAOException {
-        return List.of();
+
+    public Map<Integer, Skill> getSkillsByLawyerId(int lawyerId) throws LawyerDAOException {
+        Map<Integer,Skill> skills = new HashMap<>();
+
+        try(Connection connection = DBUtil.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQLQueries.GET_SKILLS_BY_LAWYER_ID)) {
+
+            ps.setInt(1, lawyerId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Skill skill = new Skill(
+                        rs.getInt("id"),
+                        rs.getString("name")
+                );
+                skills.put(skill.getId(), skill);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("SQL error getSkills");
+        }
+        return skills;
     }
 }

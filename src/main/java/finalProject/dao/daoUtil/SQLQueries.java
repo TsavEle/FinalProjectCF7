@@ -37,7 +37,8 @@ public class SQLQueries {
             "DELETE FROM lawyers WHERE id = ?";
 
     public static final String UPDATE_LAWYER =
-            "UPDATE lawyers SET firstname=?, lastname=?, phoneNumber=?, zipcode=?, streetName=?, streetNumber=?, email=?, vat=?, city_id=?, updated_at=?";
+            "UPDATE lawyers SET firstname=?, lastname=?, phoneNumber=?, zipcode=?, streetName=?, streetNumber=?, email=?, vat=?, city_id=?, updated_at=?" +
+                    "WHERE id=?";
 
     public static final String  ADD_SKILLS_TO_LAWYERS =
             "INSERT INTO lawyers_skills (lawyer_id, skill_id) VALUES (?, ?)";
@@ -45,6 +46,12 @@ public class SQLQueries {
     public static final String DELETE_SKILLS_FROM_LAWYER =
             "DELETE FROM lawyers_skills" +
                     "WHERE lawyer_id = ?";
+
+    public static final String GET_SKILLS_BY_LAWYER_ID =
+            "SELECT s.id, s.name " +
+                    "FROM skills s " +
+                    "JOIN lawyers_skills ls ON s.id = ls.skill_id " +
+                    "WHERE ls.lawyer_id = ?";
 
 
 
