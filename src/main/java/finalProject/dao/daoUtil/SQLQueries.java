@@ -53,6 +53,12 @@ public class SQLQueries {
                     "JOIN lawyers_skills ls ON s.id = ls.skill_id " +
                     "WHERE ls.lawyer_id = ?";
 
+    public static final String GET_ALL_CITIES =
+            "SELECT * FROM cities order by name asc";
+
+    public static final String GET_CITY_BY_ID =
+            "SELECT * FROM cities WHERE id = ?";
+
 
 
 }
