@@ -277,4 +277,70 @@ public class LawyerDAOImpl implements ILawyerDAO {
         }
         return skills;
     }
+
+    @Override
+    public Lawyer getByVat(String vat) throws LawyerDAOException {
+        Lawyer lawyer = null;
+
+        try(Connection connection = DBUtil.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQLQueries.GET_LAWYER_BY_VAT)) {
+
+            ps.setString(1, vat);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                lawyer = (new Lawyer(rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("phoneNumber"),
+                        rs.getString("zipcode"),
+                        rs.getString("streetName"),
+                        rs.getString("streetNumber"),
+                        rs.getString("email"),
+                        rs.getString("vat"),
+                        rs.getInt("cityId"),
+                        rs.getString("uuid"),
+                        rs.getTimestamp("createdAt").toLocalDateTime(),
+                        rs.getTimestamp("updatedAt").toLocalDateTime(),
+                        getSkillsByLawyerId(rs.getInt("id"))));
+            }
+            return lawyer;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("SQL error getByVat");
+        }
+    }
+
+    @Override
+    public Lawyer getByEmail(String email) throws LawyerDAOException {
+        Lawyer lawyer = null;
+
+        try(Connection connection = DBUtil.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQLQueries.GET_LAWYER_BY_EMAIL)) {
+
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                lawyer = (new Lawyer(rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("phoneNumber"),
+                        rs.getString("zipcode"),
+                        rs.getString("streetName"),
+                        rs.getString("streetNumber"),
+                        rs.getString("email"),
+                        rs.getString("vat"),
+                        rs.getInt("cityId"),
+                        rs.getString("uuid"),
+                        rs.getTimestamp("createdAt").toLocalDateTime(),
+                        rs.getTimestamp("updatedAt").toLocalDateTime(),
+                        getSkillsByLawyerId(rs.getInt("id"))));
+            }
+            return lawyer;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("SQL error getByEmail");
+        }
+    }
 }

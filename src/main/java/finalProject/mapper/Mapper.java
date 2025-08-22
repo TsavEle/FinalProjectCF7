@@ -34,7 +34,9 @@ public class Mapper {
     }
 
     private static Skill skillDTOToSkill(SkillDTO dto) {
-        return new Skill(dto.getId(), dto.getName());
+        return new Skill(
+                dto.getId(),
+                dto.getName());
     }
 
     public static SkillDTO skillToSkillDTO(Skill skill) {

@@ -1,6 +1,9 @@
 package finalProject.exceptions;
 
+
+
 import java.io.Serial;
+
 
 public class LawyerDAOException extends Exception {
     @Serial

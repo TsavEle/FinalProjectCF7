@@ -23,7 +23,6 @@ public class SQLQueries {
                     "(firstname, lastname, phoneNumber, zipcode, streetName, streetNumber, email, vat, city_id, uuid, created_at, updated_at)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-
     public static final String GET_LAWYER_BY_LASTNAME =
             "SELECT * FROM lawyers WHERE lastname = ?";
 
@@ -59,7 +58,16 @@ public class SQLQueries {
     public static final String GET_CITY_BY_ID =
             "SELECT * FROM cities WHERE id = ?";
 
+    public static final String GET_ALL_SKILLS =
+            "SELECT * FROM skills order by name asc";
 
+    public static final String GET_SKILL_BY_ID =
+            "SELECT * FROM skills WHERE id = ?";
 
+    public static final String GET_LAWYER_BY_VAT =
+            "SELECT * FROM lawyers WHERE vat = ?";
+
+    public static final String GET_LAWYER_BY_EMAIL =
+            "SELECT * FROM lawyers WHERE email = ?";
 }
 

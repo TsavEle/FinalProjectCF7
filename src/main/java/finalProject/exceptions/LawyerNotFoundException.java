@@ -1,6 +1,7 @@
 package finalProject.exceptions;
 
 import java.io.Serial;
+import java.sql.SQLException;
 
 public class LawyerNotFoundException extends Exception {
     @Serial
