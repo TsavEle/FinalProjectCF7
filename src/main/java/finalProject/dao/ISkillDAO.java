@@ -1,4 +1,4 @@
-package finalProject.dao.daoUtil;
+package finalProject.dao;
 
 import finalProject.model.Skill;
 

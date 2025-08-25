@@ -19,10 +19,11 @@ public interface ILawyerService {
         throws LawyerDAOException, LawyerNotFoundException;
     ReadOnlyDTO getLawyerById(Integer id)
         throws LawyerDAOException, LawyerNotFoundException;
-    ReadOnlyDTO getLawyerBySkill(Skill skill)
+    List<ReadOnlyDTO> getLawyersBySkill(Skill skill)
         throws LawyerDAOException, LawyerNotFoundException;
     List<ReadOnlyDTO> getAllLawyers()
         throws LawyerDAOException;
+
 
 
 

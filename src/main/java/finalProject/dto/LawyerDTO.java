@@ -1,6 +1,7 @@
 package finalProject.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class LawyerDTO  {
 
@@ -27,9 +28,16 @@ public abstract class LawyerDTO  {
                 ", email='" + email + '\'' +
                 ", vat='" + vat + '\'' +
                 ", city='" + city + '\'' +
-                ", skills='" + skills +
+                ", skills='" + getSkillsAsString() +
                 '}';
 
+    }
+
+    public  String getSkillsAsString() {
+        if (skills == null || skills.isEmpty()) return "";
+        return skills.stream()
+                .map(SkillDTO::getName)
+                .collect(Collectors.joining(", "));
     }
 
     public String getFirstname() {

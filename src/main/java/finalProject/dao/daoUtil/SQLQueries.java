@@ -47,10 +47,11 @@ public class SQLQueries {
                     "WHERE lawyer_id = ?";
 
     public static final String GET_SKILLS_BY_LAWYER_ID =
-            "SELECT s.id, s.name " +
+            "SELECT s.skill_id AS id, s.skill_name AS name " +
                     "FROM skills s " +
-                    "JOIN lawyers_skills ls ON s.id = ls.skill_id " +
+                    "JOIN lawyer_skills ls ON ls.skill_id = s.skill_id " +
                     "WHERE ls.lawyer_id = ?";
+
 
     public static final String GET_ALL_CITIES =
             "SELECT * FROM cities order by name asc";
@@ -69,5 +70,6 @@ public class SQLQueries {
 
     public static final String GET_LAWYER_BY_EMAIL =
             "SELECT * FROM lawyers WHERE email = ?";
+
 }
 

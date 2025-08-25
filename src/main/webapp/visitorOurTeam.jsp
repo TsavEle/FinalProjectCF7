@@ -52,12 +52,12 @@
                     <c:when test="${not empty lawyers}">
                         <c:forEach var="l" items="${lawyers}">
                             <tr>
-                                <td>${l.name}</td>
-                                <td>${l.surname}</td>
-                                <td>${l.practice}</td>
+                                <td>${l.firstname}</td>
+                                <td>${l.lastname}</td>
+                                <td>${l.skillsAsString}</td>
                                 <td>${l.email}</td>
-                                <td>${l.phone}</td>
-                                <td>${l.city}</td>
+                                <td>${l.phoneNumber}</td>
+                                <td>${l.city.name}</td>
                                 <td>${l.zipcode}</td>
                             </tr>
                         </c:forEach>

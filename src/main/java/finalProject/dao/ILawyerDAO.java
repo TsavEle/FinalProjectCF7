@@ -19,5 +19,6 @@ public interface ILawyerDAO {
     Lawyer getByVat(String vat) throws  LawyerDAOException;
     Lawyer getByEmail(String email) throws  LawyerDAOException;
     Map<Integer, Skill> getSkillsByLawyerId(int lawyerId) throws LawyerDAOException;
+    List<Lawyer> getLawyersBySkill(Skill skill) throws LawyerDAOException;
 
 }

@@ -1,7 +1,7 @@
 package finalProject.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 public class ReadOnlyDTO extends LawyerDTO{
 

@@ -1,6 +1,6 @@
 package finalProject.service;
 
-import finalProject.dao.daoUtil.ISkillDAO;
+import finalProject.dao.ISkillDAO;
 import finalProject.model.Skill;
 
 import java.sql.SQLException;

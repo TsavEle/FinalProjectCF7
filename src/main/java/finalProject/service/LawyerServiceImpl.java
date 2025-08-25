@@ -1,6 +1,7 @@
 package finalProject.service;
 
 import finalProject.dao.ILawyerDAO;
+import finalProject.dao.LawyerDAOImpl;
 import finalProject.dto.InsertLawyerDTO;
 import finalProject.dto.ReadOnlyDTO;
 import finalProject.dto.SkillDTO;
@@ -53,26 +54,81 @@ public class LawyerServiceImpl implements ILawyerService{
 
     @Override
     public ReadOnlyDTO updateLawyer(Integer id, UpdateLawyerDTO dto) throws LawyerDAOException, LawyerAlreadyExistsException, LawyerNotFoundException {
-        return null;
+        Lawyer lawyer;
+        Lawyer returnedLawyer;
+
+        try {
+            if (lawyerDAO.getById(id) == null)
+                throw new LawyerNotFoundException("Lawyer with id " + id + " not found!");
+
+            returnedLawyer = lawyerDAO.getByEmail(dto.getEmail());
+            if (returnedLawyer != null && !returnedLawyer.getId().equals(dto.getId()))
+                throw new LawyerAlreadyExistsException("Lawyer with id " + id + " already exists!");
+
+            lawyer = Mapper.updateLawyerDTOToLawyer(dto);
+            List<Integer> selectedSkillIds = Optional.ofNullable(dto.getSkills())
+                    .orElse(Collections.emptyList())
+                    .stream()
+                    .map(SkillDTO::getId)
+                    .collect(Collectors.toList());
+            Lawyer updatedLawyer = lawyerDAO.update(lawyer, selectedSkillIds);
+            return Mapper.lawyerToLawyerDTO(updatedLawyer);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("Error converting Lawyer to ReadOnlyDTO");
+        }
     }
 
     @Override
     public void deleteLawyer(Integer id) throws LawyerDAOException, LawyerNotFoundException {
+        try {
+            if (lawyerDAO.getById(id) == null)
+                throw  new LawyerNotFoundException("Lawyer with id " + id + " not found!");
+            lawyerDAO.delete(id);
+        } catch (LawyerDAOException | LawyerNotFoundException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
 
     }
 
     @Override
     public ReadOnlyDTO getLawyerById(Integer id) throws LawyerDAOException, LawyerNotFoundException {
-        return null;
+        Lawyer lawyer;
+
+        try {
+            lawyer = lawyerDAO.getById(id);
+            if (lawyer == null)
+                throw new LawyerNotFoundException("Lawyer with id " + id + " not found!");
+            return Mapper.lawyerToLawyerDTO(lawyer);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new LawyerDAOException("Error converting Lawyer to ReadOnlyDTO");
+        }
     }
 
     @Override
-    public ReadOnlyDTO getLawyerBySkill(Skill skill) throws LawyerDAOException, LawyerNotFoundException {
-        return null;
+    public List<ReadOnlyDTO> getLawyersBySkill(Skill skill) throws LawyerDAOException, LawyerNotFoundException {
+        List<Lawyer> lawyersToConvert;
+        List<ReadOnlyDTO> lawyersToReturn;
+
+        try {
+            lawyersToConvert = lawyerDAO.getLawyersBySkill(skill);
+            if (lawyersToConvert == null)
+                throw new LawyerNotFoundException("No lawyers with selected skill " + skill.getName());
+            lawyersToReturn = Mapper.lawyersToReadOnlyDTOs(lawyersToConvert);
+        } catch (LawyerDAOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return lawyersToReturn;
     }
 
     @Override
     public List<ReadOnlyDTO> getAllLawyers() throws LawyerDAOException {
-        return List.of();
+        return Mapper.lawyersToReadOnlyDTOs(lawyerDAO.getAll());
     }
 }

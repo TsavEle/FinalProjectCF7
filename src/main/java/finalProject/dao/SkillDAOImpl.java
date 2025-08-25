@@ -1,6 +1,7 @@
-package finalProject.dao.daoUtil;
+package finalProject.dao;
 
 import finalProject.Util.DBUtil;
+import finalProject.dao.daoUtil.SQLQueries;
 import finalProject.model.Skill;
 
 import java.sql.Connection;

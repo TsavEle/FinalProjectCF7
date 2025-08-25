@@ -8,6 +8,7 @@ import finalProject.model.Lawyer;
 import finalProject.model.Skill;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -143,5 +144,19 @@ public class Mapper {
                 null,
                 skills
         );
+    }
+
+    public static List<ReadOnlyDTO> lawyersToReadOnlyDTOs(List<Lawyer> lawyers) {
+        List<ReadOnlyDTO> dtoList = new ArrayList<>();
+
+        for (Lawyer lawyer : lawyers) {
+            try {
+                ReadOnlyDTO dto = Mapper.lawyerToLawyerDTO(lawyer);
+                dtoList.add(dto);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return dtoList;
     }
 }

@@ -343,4 +343,38 @@ public class LawyerDAOImpl implements ILawyerDAO {
             throw new LawyerDAOException("SQL error getByEmail");
         }
     }
+
+    @Override
+    public List<Lawyer> getLawyersBySkill(Skill skill) throws LawyerDAOException {
+        Lawyer lawyer;
+        List<Lawyer> lawyers = new ArrayList<>();
+
+        try(Connection connection = DBUtil.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQLQueries.GET_LAWYERS_BY_SKILL)) {
+
+            ps.setString(1, skill.getName());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                lawyer = (new Lawyer(rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("phoneNumber"),
+                        rs.getString("zipcode"),
+                        rs.getString("streetName"),
+                        rs.getString("streetNumber"),
+                        rs.getString("email"),
+                        rs.getString("vat"),
+                        rs.getInt("cityId"),
+                        rs.getString("uuid"),
+                        rs.getTimestamp("createdAt").toLocalDateTime(),
+                        rs.getTimestamp("updatedAt").toLocalDateTime(),
+                        getSkillsByLawyerId(rs.getInt("id"))));
+                lawyers.add(lawyer);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lawyers;
+    }
 }
