@@ -1,4 +1,3 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/WEB-INF/jsp/header2.jsp" %>
 
 <div style="text-align:center; margin-top:50px; min-height:80vh;">

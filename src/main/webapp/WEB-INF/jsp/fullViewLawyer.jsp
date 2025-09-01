@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="/WEB-INF/jsp/header2.jsp"%>
 
@@ -22,7 +21,11 @@
     </c:if>
 
     <div style="margin-top:20px;">
-        <a href="adminOurTeam"><button style="padding:10px 20px;">Back to Team</button></a>
+        <a href="adminOurTeam">
+            <button style="padding:15px 40px; font-size:18px; background-color:#28a745; color:white; border:none; border-radius:8px; cursor:pointer;">
+                Back to Team
+            </button>
+        </a>
     </div>
 </div>
 

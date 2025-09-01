@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -28,9 +27,13 @@
 
 <%@ include file="/WEB-INF/jsp/header2.jsp"%>
 
-<div style="text-align: center; margin-bottom: 40px;">
+<div style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
     <a href="${pageContext.request.contextPath}/adminOurTeam">
-        <button style="padding: 10px 20px;">BACK</button>
+        <button style="padding: 15px 40px; font-size: 18px;
+                       background-color: #28a745; color: white;
+                       border: none; border-radius: 8px; cursor: pointer;">
+            BACK
+        </button>
     </a>
 </div>
 

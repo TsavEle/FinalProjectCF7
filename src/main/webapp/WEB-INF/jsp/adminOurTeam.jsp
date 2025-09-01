@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -39,7 +39,9 @@
     <div style="margin-bottom:50px;">
         <form action="adminOurTeam" method="get">
             <input type="text" name="practice" placeholder="Search by practices" style="padding:10px; width:300px;">
-            <button type="submit" style="padding:10px 20px;">Search</button>
+            <button type="submit" style="padding:15px 40px; font-size:18px; background-color:#28a745; color:white; border:none; border-radius:8px; cursor:pointer;">
+                Search
+            </button>
         </form>
     </div>
 
@@ -47,7 +49,7 @@
         <div style="margin-bottom:50px;">
             <a href="${pageContext.request.contextPath}/insertLawyer">
                 <button style="padding:15px 40px; font-size:18px; background-color:#28a745; color:white; border:none; border-radius:8px; cursor:pointer;">
-                    ➕ Insert Lawyer
+                    Insert Lawyer
                 </button>
             </a>
         </div>

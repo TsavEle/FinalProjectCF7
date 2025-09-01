@@ -1,5 +1,24 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/WEB-INF/jsp/header.jsp" %>
+
+<style>
+    /* Style for navigation buttons */
+    .nav-button {
+        background-color: #004080; /* deep blue */
+        color: #ffffff; /* white text */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none; /* for <a> tags */
+        cursor: pointer;
+        transition: background-color 0.2s, opacity 0.2s;
+    }
+
+    .nav-button:hover {
+        background-color: #003366; /* slightly darker on hover */
+        opacity: 0.9;
+    }
+</style>
 
 <div style="display:flex; flex-direction:column; min-height:100vh;">
 
@@ -22,12 +41,8 @@
 
         <!-- Navigation buttons -->
         <div style="margin-top:30px;">
-            <a href="${pageContext.request.contextPath}/index.jsp">
-                <button style="padding:10px 20px; margin-right:20px;">HOME</button>
-            </a>
-            <a href="${pageContext.request.contextPath}/visitorOurTeam">
-                <button style="padding:10px 20px;">OUR TEAM</button>
-            </a>
+            <a href="${pageContext.request.contextPath}/index.jsp" class="nav-button" style="margin-right:20px;">HOME</a>
+            <a href="${pageContext.request.contextPath}/visitorOurTeam" class="nav-button">OUR TEAM</a>
         </div>
     </div>
 

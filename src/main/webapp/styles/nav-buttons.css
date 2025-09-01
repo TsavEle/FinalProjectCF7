@@ -1,0 +1,19 @@
+/* nav-buttons.css */
+
+/* Style for navigation buttons */
+.nav-button {
+    background-color: #004080; /* deep blue */
+    color: #ffffff; /* white text */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none; /* for <a> tags */
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.nav-button:hover {
+    background-color: #003366; /* slightly darker on hover */
+    opacity: 0.9;
+}

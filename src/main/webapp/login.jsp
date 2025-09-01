@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%@ include file="WEB-INF/jsp/header3.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -33,8 +33,7 @@
 
 
         <div>
-            <button type="submit"
-                    style="padding:10px 20px; background-color:green; color:white; border:none; cursor:pointer;">
+            <button type="submit" style="padding:15px 40px; font-size:18px; background-color:#28a745; color:white; border:none; border-radius:8px; cursor:pointer;">
                 Login
             </button>
         </div>
