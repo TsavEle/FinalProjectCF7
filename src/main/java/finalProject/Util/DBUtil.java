@@ -12,7 +12,7 @@ public class DBUtil {
     private static Connection connection;
 
     static {
-        ds.setUrl("jdbc:mysql://localhost:3306/finalproject?serverTimeZone=UTC");
+        ds.setUrl("jdbc:mysql://localhost:3306/test_schema?serverTimeZone=UTC");
         ds.setUsername("lawyer_admin");
         ds.setPassword("Lawyer12345!");
         ds.setInitialSize(8);
