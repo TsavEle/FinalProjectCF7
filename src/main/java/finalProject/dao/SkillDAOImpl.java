@@ -22,8 +22,8 @@ public class SkillDAOImpl implements ISkillDAO{
             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
+                int id = rs.getInt("skill_id");
+                String name = rs.getString("skill_name");
 
                 Skill skill = new Skill(id, name);
                 skills.add(skill);
@@ -39,5 +39,27 @@ public class SkillDAOImpl implements ISkillDAO{
     @Override
     public Skill getSkillByID(Integer id) throws SQLException {
         return null;
+    }
+
+    @Override
+    public Skill getSkillByName(String skillName) throws SQLException {
+        Skill skill = null;
+        try(Connection connection = DBUtil.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQLQueries.GET_SKILL_BY_SKILL_NAME)) {
+
+            ps.setString(1, skillName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("skill_id");
+                String name = rs.getString("skill_name");
+
+                skill = new Skill(id, name);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return skill;
     }
 }

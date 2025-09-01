@@ -12,4 +12,6 @@ public interface ISkillDAO {
     Skill getSkillByID(Integer id)
         throws SQLException;
 
+    Skill getSkillByName(String skillName)
+        throws SQLException;
 }

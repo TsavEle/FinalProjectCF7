@@ -18,8 +18,6 @@ public class LawyerDAOImpl implements ILawyerDAO {
 
         try (Connection connection = DBUtil.getConnection()) {
 
-            connection.setAutoCommit(false);
-
             try (PreparedStatement ps = connection.prepareStatement(SQLQueries.INSERT_LAWYER, Statement.RETURN_GENERATED_KEYS)){
                 ps.setString(1, lawyer.getFirstname());
                 ps.setString(2, lawyer.getLastname());
@@ -29,11 +27,13 @@ public class LawyerDAOImpl implements ILawyerDAO {
                 ps.setString(6, lawyer.getStreetNumber());
                 ps.setString(7, lawyer.getEmail());
                 ps.setString(8, lawyer.getVat());
-                ps.setInt(9, lawyer.getCityId());
-                ps.setString(10, lawyer.getUuid() != null ? lawyer.getUuid() : UUID.randomUUID().toString());
+                 ps.setInt(9, lawyer.getCityId());
+                ps.setString(10, UUID.randomUUID().toString());
                 ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
                 ps.setTimestamp(12, Timestamp.valueOf(LocalDateTime.now()));
-                ps.executeUpdate();
+
+                int rowsAffected = ps.executeUpdate();
+                System.out.println("Rows inserted: " + rowsAffected);
 
                 ResultSet rsGeneratedKeys = ps.getGeneratedKeys();
                 if (rsGeneratedKeys.next()) {
@@ -64,7 +64,6 @@ public class LawyerDAOImpl implements ILawyerDAO {
         Lawyer updatedLawyer = null;
 
         try (Connection connection = DBUtil.getConnection()){
-            connection.setAutoCommit(false);
 
             try (PreparedStatement ps = connection.prepareStatement(SQLQueries.UPDATE_LAWYER)) {
                 ps.setString(1, lawyer.getFirstname());
@@ -95,7 +94,6 @@ public class LawyerDAOImpl implements ILawyerDAO {
                     ps.executeUpdate();
                 }
             }
-            connection.commit();
             updatedLawyer = getById(lawyer.getId());
 
         } catch (SQLException e) {

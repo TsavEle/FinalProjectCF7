@@ -1,57 +1,113 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="/WEB-INF/jsp/header2.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setHeader("Expires", "0");
+%>
 
-<h2 style="text-align:center; margin-top:20px;">Admin - Our Team</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Our Team</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/visitor.css">
+</head>
+<body>
 
-<!-- Insert Lawyer Button -->
-<div style="text-align:center; margin-bottom:20px;">
-    <a href="insertLawyer.jsp">
-        <button style="background-color:green; color:white; padding:10px 20px; border:none; border-radius:5px;">
-            Insert Lawyer
-        </button>
-    </a>
-</div>
+<%@ include file="/WEB-INF/jsp/header2.jsp"%>
 
-<!-- Mock Lawyer Card -->
-<div style="display:flex; justify-content:center; margin-top:20px;">
-    <div style="
-        border:1px solid #ddd;
-        border-radius:12px;
-        width:320px;
-        padding:20px;
-        text-align:center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    "
-    onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.15)';"
-    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+<c:if test="${not empty sessionScope.successMessage}">
+    <div style="color: green; text-align: center; margin: 10px 0;">
+        ${sessionScope.successMessage}
+    </div>
+    <c:remove var="successMessage" scope="session"/>
+</c:if>
 
-        <!-- Avatar -->
-        <div style="width:100px; height:100px; margin:0 auto 15px auto; border-radius:50%; overflow:hidden; background-color:#f0f0f0; display:flex; align-items:center; justify-content:center; font-size:40px; color:#888;">
-            JD
-        </div>
+<c:if test="${not empty sessionScope.errorMessage}">
+    <div style="color: red; text-align: center; margin: 10px 0;">
+        ${sessionScope.errorMessage}
+    </div>
+    <c:remove var="errorMessage" scope="session"/>
+</c:if>
 
-        <!-- Lawyer Info -->
-        <h3 style="margin-bottom:5px;">John Doe</h3>
-        <p style="margin:3px 0; font-size:14px; color:#555;"><strong>Practice:</strong> Corporate Law</p>
-        <p style="margin:3px 0; font-size:14px; color:#555;"><strong>City:</strong> New York</p>
+<div class="main-content" style="text-align:center; margin-top:100px;">
 
-        <!-- Admin buttons -->
-        <div style="margin-top:15px;">
-            <button style="padding:6px 14px; margin:5px; border-radius:5px; border:none; background-color:#007bff; color:white; cursor:pointer;">
-                Full View
-            </button>
-            <a href="updateLawyer.jsp?id=1">
-                <button style="padding:6px 14px; margin:5px; border-radius:5px; border:none; background-color:#28a745; color:white; cursor:pointer;">
-                    Update
+
+
+    <!-- Search bar -->
+    <div style="margin-bottom:50px;">
+        <form action="adminOurTeam" method="get">
+            <input type="text" name="practice" placeholder="Search by practices" style="padding:10px; width:300px;">
+            <button type="submit" style="padding:10px 20px;">Search</button>
+        </form>
+    </div>
+
+    <!-- Insert Lawyer button -->
+        <div style="margin-bottom:50px;">
+            <a href="${pageContext.request.contextPath}/insertLawyer">
+                <button style="padding:15px 40px; font-size:18px; background-color:#28a745; color:white; border:none; border-radius:8px; cursor:pointer;">
+                    ➕ Insert Lawyer
                 </button>
             </a>
-            <button style="padding:6px 14px; margin:5px; border-radius:5px; border:none; background-color:#dc3545; color:white; cursor:pointer;"
-                    onclick="openDeleteModal('1', 'John', 'Doe')">
-                Delete
-            </button>
         </div>
+
+    <!-- Lawyers board -->
+    <div style="max-width:1000px; margin:0 auto; text-align:left;">
+        <table border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse:collapse;">
+            <thead style="background-color:#004080; color:white;">
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Practice</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>City</th>
+                    <th>Zipcode</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:choose>
+                    <c:when test="${not empty lawyers}">
+                        <c:forEach var="l" items="${lawyers}">
+                            <tr>
+                                <td>${l.firstname}</td>
+                                <td>${l.lastname}</td>
+                                <td>${l.skillsAsString}</td>
+                                <td>${l.email}</td>
+                                <td>${l.phoneNumber}</td>
+                                <td>${l.city.name}</td>
+                                <td>${l.zipcode}</td>
+                                <td>
+                                    <a href="fullViewLawyer?id=${l.id}">
+                                        <button style="padding:5px 10px; margin:2px; background-color:#007bff; color:white; border:none; border-radius:4px;">
+                                            Full View
+                                        </button>
+                                    </a>
+                                    <a href="${pageContext.request.contextPath}/updateLawyer?id=${l.id}">
+                                        <button style="padding:5px 10px; margin:2px; background-color:#28a745; color:white; border:none; border-radius:4px;">
+                                            Update
+                                        </button>
+                                    </a>
+                                    <button style="padding:5px 10px; margin:2px; background-color:#dc3545; color:white; border:none; border-radius:4px;"
+                                            onclick="openDeleteModal('${l.id}', '${l.firstname}', '${l.lastname}')">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="8" style="text-align:center;">No lawyers found.</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
+            </tbody>
+        </table>
     </div>
+
 </div>
 
 <!-- Delete Confirmation Modal -->
@@ -60,7 +116,7 @@
         <h2 style="color:red;">Delete Confirmation</h2>
         <p>Are you sure you want to delete <strong id="lawyerName"></strong>?</p>
 
-        <form id="deleteForm" action="deleteLawyerServlet" method="post" style="margin-top:20px;">
+        <form id="deleteForm" action="${pageContext.request.contextPath}/deleteLawyerController" method="post" style="margin-top:20px;">
             <input type="hidden" name="id" id="lawyerId">
             <button type="submit" style="background-color:#dc3545; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">
                 Confirm
@@ -92,4 +148,4 @@
     }
 </script>
 
-<jsp:include page="/WEB-INF/jsp/footer.jsp" />
+<%@ include file="/WEB-INF/jsp/footer.jsp"%>

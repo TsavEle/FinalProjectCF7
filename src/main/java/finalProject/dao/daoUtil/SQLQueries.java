@@ -3,11 +3,11 @@ package finalProject.dao.daoUtil;
 public class SQLQueries {
 
     public static final String GET_LAWYERS_BY_SKILL =
-            "SELECT l.*, s.id AS skill_id, s.name AS skill_name " +
+            "SELECT l.*, s.skill_id AS skill_id, s.skill_name AS skill_name " +
                     "FROM lawyers l " +
-                    "JOIN lawyers_skills ls ON l.id = ls.lawyer_id " +
-                    "JOIN skills s ON ls.skill_id = s.id " +
-                    "WHERE s.name LIKE ?";
+                    "JOIN lawyer_skills ls ON l.id = ls.lawyer_id " +
+                    "JOIN skills s ON ls.skill_id = s.skill_id " +
+                    "WHERE s.skill_name LIKE ?";
 
     public static final String GET_LAWYER_BY_ID =
             "SELECT * FROM lawyers WHERE id = ?";
@@ -20,7 +20,7 @@ public class SQLQueries {
 
     public static final String INSERT_LAWYER =
             "INSERT INTO lawyers " +
-                    "(firstname, lastname, phoneNumber, zipcode, streetName, streetNumber, email, vat, city_id, uuid, created_at, updated_at)" +
+                    "(firstname, lastname, phoneNumber, zipcode, streetName, streetNumber, email, vat, cityId, uuid, createdAt, updatedAt)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public static final String GET_LAWYER_BY_LASTNAME =
@@ -36,15 +36,16 @@ public class SQLQueries {
             "DELETE FROM lawyers WHERE id = ?";
 
     public static final String UPDATE_LAWYER =
-            "UPDATE lawyers SET firstname=?, lastname=?, phoneNumber=?, zipcode=?, streetName=?, streetNumber=?, email=?, vat=?, city_id=?, updated_at=?" +
+            "UPDATE lawyers SET firstname=?, lastname=?, phoneNumber=?, zipcode=?, streetName=?, " +
+                    "streetNumber=?, email=?, vat=?, cityId=?, `updatedAt`=? " +  // note the space at the end
                     "WHERE id=?";
 
     public static final String  ADD_SKILLS_TO_LAWYERS =
-            "INSERT INTO lawyers_skills (lawyer_id, skill_id) VALUES (?, ?)";
+            "INSERT INTO lawyer_skills (lawyer_id, skill_id) VALUES (?, ?)";
 
     public static final String DELETE_SKILLS_FROM_LAWYER =
-            "DELETE FROM lawyers_skills" +
-                    "WHERE lawyer_id = ?";
+            "DELETE FROM lawyer_skills WHERE lawyer_id = ?";
+
 
     public static final String GET_SKILLS_BY_LAWYER_ID =
             "SELECT s.skill_id AS id, s.skill_name AS name " +
@@ -60,10 +61,10 @@ public class SQLQueries {
             "SELECT * FROM cities WHERE id = ?";
 
     public static final String GET_ALL_SKILLS =
-            "SELECT * FROM skills order by name asc";
+            "SELECT * FROM skills order by skill_name asc";
 
     public static final String GET_SKILL_BY_ID =
-            "SELECT * FROM skills WHERE id = ?";
+            "SELECT * FROM skills WHERE skill_id = ?";
 
     public static final String GET_LAWYER_BY_VAT =
             "SELECT * FROM lawyers WHERE vat = ?";
@@ -71,5 +72,7 @@ public class SQLQueries {
     public static final String GET_LAWYER_BY_EMAIL =
             "SELECT * FROM lawyers WHERE email = ?";
 
+    public static final String GET_SKILL_BY_SKILL_NAME =
+            "SELECT * FROM skills WHERE skill_name = ?";
 }
 

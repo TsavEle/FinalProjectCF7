@@ -11,7 +11,7 @@
     <h2 style="color:red;">Delete Confirmation</h2>
     <p>Are you sure you want to delete <strong><%= name %> <%= lastname %></strong>?</p>
 
-    <form action="deleteLawyerServlet" method="post" style="margin-top:20px;">
+    <form action="deleteLawyerController" method="post" style="margin-top:20px;">
         <input type="hidden" name="id" value="<%= lawyerId %>">
 
         <button type="submit" style="background-color:#dc3545; color:white; padding:10px 20px; border:none; border-radius:5px; cursor:pointer;">

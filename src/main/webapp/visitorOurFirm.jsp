@@ -22,10 +22,10 @@
 
         <!-- Navigation buttons -->
         <div style="margin-top:30px;">
-            <a href="index.jsp">
+            <a href="${pageContext.request.contextPath}/index.jsp">
                 <button style="padding:10px 20px; margin-right:20px;">HOME</button>
             </a>
-            <a href="visitorOurTeam.jsp">
+            <a href="${pageContext.request.contextPath}/visitorOurTeam">
                 <button style="padding:10px 20px;">OUR TEAM</button>
             </a>
         </div>
