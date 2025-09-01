@@ -32,9 +32,6 @@
 </c:if>
 
 <div class="main-content" style="text-align:center; margin-top:100px;">
-
-
-
     <!-- Search bar -->
     <div style="margin-bottom:50px;">
         <form action="adminOurTeam" method="get">

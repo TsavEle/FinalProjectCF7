@@ -1,6 +1,4 @@
-
 <%@ include file="/WEB-INF/jsp/header2.jsp" %>
-
 <%
     String lawyerId = request.getParameter("id");
     String name = request.getParameter("name");
