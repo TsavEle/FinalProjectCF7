@@ -12,7 +12,7 @@ spring.datasource.password="Lawyer12345!"
 
 You can run with mvn clean and mvn jetty:run
 The dump includes empty tables for lawyers and lawyers_skills.
-It also includes the tables cities, skills and tha data needed for the app to run properly.
+It also includes the tables cities, skills and the data needed for the app to run properly.
 
 These are the requirements for the app:
 Java 17+
